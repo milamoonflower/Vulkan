@@ -30,7 +30,8 @@ void VulkanBase::createSyncObjects() {
 
 	if (vkCreateSemaphore(device, &semaphoreInfo, nullptr, &imageAvailableSemaphore) != VK_SUCCESS ||
 		vkCreateSemaphore(device, &semaphoreInfo, nullptr, &renderFinishedSemaphore) != VK_SUCCESS ||
-		vkCreateFence(device, &fenceInfo, nullptr, &inFlightFence) != VK_SUCCESS) {
+		vkCreateFence(device, &fenceInfo, nullptr, &inFlightFence) != VK_SUCCESS)
+	{
 		throw std::runtime_error("failed to create synchronization objects for a frame!");
 	}
 

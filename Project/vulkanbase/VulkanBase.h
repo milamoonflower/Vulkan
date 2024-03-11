@@ -51,6 +51,21 @@ public:
 	}
 
 private:
+	/*const std::vector<Vertex> vertices
+	{
+		{ {-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f} },
+		{ {0.5f, -0.5f},  {0.0f, 1.0f, 0.0f} },
+		{ {0.5f, 0.5f},   {0.0f, 0.0f, 1.0f} },
+		{ {-0.5f, 0.5f},  {1.0f, 1.0f, 1.0f} }
+	};*/
+
+	const std::vector<Vertex> vertices
+	{
+		{ {0.0f, -0.5f}, {1.0f, 1.0f, 1.0f} },
+		{ {0.5f, 0.5f},  {0.0f, 1.0f, 0.0f} },
+		{ {-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f} }
+	};
+
 	void initVulkan()
 	{
 		// week 06
@@ -73,22 +88,17 @@ private:
 		createFrameBuffers();
 		// week 02
 		createCommandPool();
+		createVertexBuffer();
 		createCommandBuffer();
 
 		// week 06
 		createSyncObjects();
-
-		const std::vector<Vertex> vertices
-		{
-			{ {-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f} },
-			{ {0.5f, -0.5f},  {0.0f, 1.0f, 0.0f} },
-			{ {0.5f, 0.5f},   {0.0f, 0.0f, 1.0f} },
-			{ {-0.5f, 0.5f},  {1.0f, 1.0f, 1.0f} }
-		};
 	}
 
-	void mainLoop() {
-		while (!glfwWindowShouldClose(window)) {
+	void mainLoop()
+	{
+		while (!glfwWindowShouldClose(window))
+		{
 			glfwPollEvents();
 			// week 06
 			drawFrame();
@@ -96,13 +106,15 @@ private:
 		vkDeviceWaitIdle(device);
 	}
 
-	void cleanup() {
+	void cleanup()
+	{
 		vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
 		vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
 		vkDestroyFence(device, inFlightFence, nullptr);
 
 		vkDestroyCommandPool(device, commandPool, nullptr);
-		for (auto framebuffer : swapChainFramebuffers) {
+		for (auto framebuffer : swapChainFramebuffers)
+		{
 			vkDestroyFramebuffer(device, framebuffer, nullptr);
 		}
 
@@ -110,11 +122,13 @@ private:
 		vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 		vkDestroyRenderPass(device, renderPass, nullptr);
 
-		for (auto imageView : swapChainImageViews) {
+		for (auto imageView : swapChainImageViews)
+		{
 			vkDestroyImageView(device, imageView, nullptr);
 		}
 
-		if (enableValidationLayers) {
+		if (enableValidationLayers)
+		{
 			DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
 		}
 		vkDestroySwapchainKHR(device, swapChain, nullptr);
@@ -123,18 +137,37 @@ private:
 		vkDestroySurfaceKHR(instance, surface, nullptr);
 		vkDestroyInstance(instance, nullptr);
 
+		vkDestroyBuffer(device, vertexBuffer, nullptr);
+		vkFreeMemory(device, vertexBufferMemory, nullptr);
+
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
 
-	void createSurface() {
-		if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+	void createSurface()
+	{
+		if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS)
+		{
 			throw std::runtime_error("failed to create window surface!");
 		}
 	}
 
-	Shader m_GradientShader{ "shaders/shader.vert.spv" , "shaders/shader.frag.spv"};
+	Shader m_GradientShader{ "shaders/shader.vert.spv" , "shaders/shader.frag.spv" };
 
+	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+	{
+		VkPhysicalDeviceMemoryProperties memProperties;
+		vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
+
+		for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
+			if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
+			{
+				return i;
+			}
+		}
+
+		throw std::runtime_error("failed to find suitable memory type!");
+	}
 
 	// Week 01: 
 	// Actual window
@@ -157,11 +190,14 @@ private:
 	VkCommandBuffer commandBuffer;
 
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	VkBuffer vertexBuffer;
+	VkDeviceMemory vertexBufferMemory;
 
 	void drawFrame(uint32_t imageIndex);
 	void createCommandBuffer();
 	void createCommandPool(); 
 	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+	void createVertexBuffer();
 	
 	// Week 03
 	// Renderpass concept
