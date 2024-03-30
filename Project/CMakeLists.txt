@@ -39,7 +39,7 @@ set(SOURCES
  "Shader.h" "Shader.cpp")
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${GLSL_SOURCE_FILES}  "Vertex.h" "glm/glm/glm.hpp" "Mesh.h" "Mesh.cpp")
+add_executable(${PROJECT_NAME} ${SOURCES} ${GLSL_SOURCE_FILES}  "Vertex.h" "glm/glm/glm.hpp" "Mesh.h" "Mesh.cpp"  "CommandBuffer.h" "CommandBuffer.cpp"   "Camera.h" "RenderPass.h" "RenderPass.cpp")
 add_dependencies(${PROJECT_NAME} Shaders)
 # Link libraries
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

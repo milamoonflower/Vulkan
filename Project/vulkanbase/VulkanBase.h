@@ -18,6 +18,7 @@
 #include"Shader.h"
 #include "Vertex.h"
 #include "../Project/CommandBuffer.h"
+#include "../RenderPass.h"
 
 class CommandBuffer;
 
@@ -84,7 +85,7 @@ private:
 		
 		// week 03
 		m_GradientShader.Initialize(device);
-		createRenderPass();
+		//createRenderPass();
 		createGraphicsPipeline();
 		createFrameBuffers();
 		// week 02
@@ -124,7 +125,7 @@ private:
 
 		vkDestroyPipeline(device, graphicsPipeline, nullptr);
 		vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
-		vkDestroyRenderPass(device, renderPass, nullptr);
+		vkDestroyRenderPass(device, renderPass.GetRenderPass(), nullptr);
 
 		for (auto imageView : swapChainImageViews)
 		{
@@ -201,25 +202,23 @@ private:
 	// Week 03
 	// Renderpass concept
 	// Graphics pipeline
-	
-	std::vector<VkFramebuffer> swapChainFramebuffers;
-	VkPipelineLayout pipelineLayout;
-	VkPipeline graphicsPipeline;
-	VkRenderPass renderPass;
-
-	void createFrameBuffers();
-	void createRenderPass();
-	void createGraphicsPipeline();
-
-	// Week 04
-	// Swap chain and image view support
-
 	VkSwapchainKHR swapChain;
 	std::vector<VkImage> swapChainImages;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
 
 	std::vector<VkImageView> swapChainImageViews;
+	
+	std::vector<VkFramebuffer> swapChainFramebuffers;
+	VkPipelineLayout pipelineLayout;
+	VkPipeline graphicsPipeline;
+	RenderPass renderPass{ RenderPass(device, swapChainImageFormat) };
+
+	void createFrameBuffers();
+	void createGraphicsPipeline();
+
+	// Week 04
+	// Swap chain and image view support
 
 	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
