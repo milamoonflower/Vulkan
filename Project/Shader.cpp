@@ -47,8 +47,8 @@ VkPipelineVertexInputStateCreateInfo Shader::createVertexInputStateInfo()
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 
-	m_BindingDescription = Vertex::getBindingDescription();
-	m_AttributeDescriptions = Vertex::getAttributeDescriptions();
+	m_BindingDescription = Vertex2D::getBindingDescription();
+	m_AttributeDescriptions = Vertex2D::getAttributeDescriptions();
 
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(m_AttributeDescriptions.size());
