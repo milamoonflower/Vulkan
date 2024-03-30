@@ -1,5 +1,4 @@
 #pragma once
-
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
@@ -17,8 +16,10 @@
 #include <algorithm>
 
 #include"Shader.h"
-#include "../Vertex.h"
+#include "Vertex.h"
+#include "../Project/CommandBuffer.h"
 
+class CommandBuffer;
 
 const std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 
@@ -87,9 +88,12 @@ private:
 		createGraphicsPipeline();
 		createFrameBuffers();
 		// week 02
-		createCommandPool();
+		
+		QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice);
+		commandBuffer.Initialize(device, queueFamilyIndices.graphicsFamily.value());
+		//createCommandPool();
 		createVertexBuffer();
-		createCommandBuffer();
+		//createCommandBuffer();
 
 		// week 06
 		createSyncObjects();
@@ -112,7 +116,7 @@ private:
 		vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
 		vkDestroyFence(device, inFlightFence, nullptr);
 
-		vkDestroyCommandPool(device, commandPool, nullptr);
+		//vkDestroyCommandPool(device, commandPool, nullptr);
 		for (auto framebuffer : swapChainFramebuffers)
 		{
 			vkDestroyFramebuffer(device, framebuffer, nullptr);
@@ -177,18 +181,13 @@ private:
 
 	GLFWwindow* window;
 	void initWindow();
-
-	
-
 	void drawScene();
 
 	// Week 02
 	// Queue families
 	// CommandBuffer concept
 
-	VkCommandPool commandPool;
-	VkCommandBuffer commandBuffer;
-
+	CommandBuffer commandBuffer;
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 	VkBuffer vertexBuffer;
 	VkDeviceMemory vertexBufferMemory;
