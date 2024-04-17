@@ -2,6 +2,14 @@
 #include <vulkanbase/VulkanUtil.h>
 #include "Vertex.h"
 
+Shader::Shader(const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
+	: m_VertexShaderFile(vertexShaderFile)
+	, m_FragmentShaderFile(fragmentShaderFile)
+{
+
+}
+
+
 void  Shader::Initialize(const VkDevice& vkDevice)
 {
 	m_ShaderStages.push_back(createVertexShaderInfo(vkDevice));

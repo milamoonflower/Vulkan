@@ -7,13 +7,9 @@
 class Shader
 {
 public:
-	Shader(const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
-		: m_VertexShaderFile(vertexShaderFile)
-		, m_FragmentShaderFile(fragmentShaderFile)
-	{
-	}
-
+	Shader(const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
 	~Shader() = default;
+
 	void Initialize(const VkDevice& vkDevice);
 	std::vector<VkPipelineShaderStageCreateInfo>& GetShaderStages() { return m_ShaderStages; };
 	void DestroyShaderModules(const VkDevice& vkDevice);
@@ -33,9 +29,4 @@ private:
 
 	VkVertexInputBindingDescription m_BindingDescription;
 	std::array<VkVertexInputAttributeDescription, 2> m_AttributeDescriptions;
-
-	Shader(const Shader&) = delete;
-	Shader& operator=(const Shader&) = delete;
-	Shader(const Shader&&) = delete;
-	Shader& operator=(const Shader&&) = delete;
 };

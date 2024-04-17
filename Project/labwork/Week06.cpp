@@ -45,10 +45,10 @@ void VulkanBase::drawFrame()
 	uint32_t imageIndex;
 	vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
-	vkResetCommandBuffer(commandBuffer.GetCommandBuffer(), /*VkCommandBufferResetFlagBits*/ 0);
-	commandBuffer.Begin();
+	vkResetCommandBuffer(m_pCommandBuffer->GetCommandBuffer(), /*VkCommandBufferResetFlagBits*/ 0);
+	m_pCommandBuffer->Begin();
 	drawFrame(imageIndex);
-	commandBuffer.End();
+	m_pCommandBuffer->End();
 
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -60,13 +60,14 @@ void VulkanBase::drawFrame()
 	submitInfo.pWaitDstStageMask = waitStages;
 
 	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &commandBuffer.GetCommandBuffer();
+	submitInfo.pCommandBuffers = &m_pCommandBuffer->GetCommandBuffer();
 
 	VkSemaphore signalSemaphores[] = { renderFinishedSemaphore };
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = signalSemaphores;
 
-	if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFence) != VK_SUCCESS) {
+	if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFence) != VK_SUCCESS)
+	{
 		throw std::runtime_error("failed to submit draw command buffer!");
 	}
 

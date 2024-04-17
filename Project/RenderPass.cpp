@@ -1,6 +1,11 @@
 #include "RenderPass.h"
 #include <iostream>
 
+RenderPass::RenderPass()
+{
+
+}
+
 RenderPass::RenderPass(VkDevice device, VkFormat swapchainImageFormat)
 	: m_Device{ device }
 {

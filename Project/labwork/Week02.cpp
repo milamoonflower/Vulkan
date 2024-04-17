@@ -11,8 +11,8 @@ void VulkanBase::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t ima
 	{
 		throw std::runtime_error("failed to begin recording command buffer!");
 	}
-	drawFrame(imageIndex);
 
+	drawFrame(imageIndex);
 
 	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
 	{
@@ -22,26 +22,26 @@ void VulkanBase::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t ima
 
 void VulkanBase::drawFrame(uint32_t imageIndex)
 {
-	renderPass.Begin(swapChainFramebuffers, imageIndex, swapChainExtent, commandBuffer.GetCommandBuffer());
+	m_pRenderPass->Begin(swapChainFramebuffers, imageIndex, swapChainExtent, m_pCommandBuffer->GetCommandBuffer());
 
-	vkCmdBindPipeline(commandBuffer.GetCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+	vkCmdBindPipeline(m_pCommandBuffer->GetCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS, m_pGraphicsPipeline->GetPipeline());
 
-	VkViewport viewport{};
-	viewport.x = 0.0f;
-	viewport.y = 0.0f;
-	viewport.width = (float)swapChainExtent.width;
-	viewport.height = (float)swapChainExtent.height;
-	viewport.minDepth = 0.0f;
-	viewport.maxDepth = 1.0f;
-	vkCmdSetViewport(commandBuffer.GetCommandBuffer(), 0, 1, &viewport);
-
-	VkRect2D scissor{};
-	scissor.offset = { 0, 0 };
-	scissor.extent = swapChainExtent;
-	vkCmdSetScissor(commandBuffer.GetCommandBuffer(), 0, 1, &scissor);
+// 	VkViewport viewport{};
+// 	viewport.x = 0.0f;
+// 	viewport.y = 0.0f;
+// 	viewport.width = (float)swapChainExtent.width;
+// 	viewport.height = (float)swapChainExtent.height;
+// 	viewport.minDepth = 0.0f;
+// 	viewport.maxDepth = 1.0f;
+// 	vkCmdSetViewport(commandBuffer.GetCommandBuffer(), 0, 1, &viewport);
+// 
+// 	VkRect2D scissor{};
+// 	scissor.offset = { 0, 0 };
+// 	scissor.extent = swapChainExtent;
+// 	vkCmdSetScissor(commandBuffer.GetCommandBuffer(), 0, 1, &scissor);
 
 	drawScene();
-	renderPass.End(commandBuffer.GetCommandBuffer());
+	m_pRenderPass->End(m_pCommandBuffer->GetCommandBuffer());
 }
 
 QueueFamilyIndices VulkanBase::findQueueFamilies(VkPhysicalDevice device)
@@ -55,19 +55,23 @@ QueueFamilyIndices VulkanBase::findQueueFamilies(VkPhysicalDevice device)
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
 
 	int i = 0;
-	for (const auto& queueFamily : queueFamilies) {
-		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+	for (const auto& queueFamily : queueFamilies)
+	{
+		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+		{
 			indices.graphicsFamily = i;
 		}
 
 		VkBool32 presentSupport = false;
 		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
 
-		if (presentSupport) {
+		if (presentSupport)
+		{
 			indices.presentFamily = i;
 		}
 
-		if (indices.isComplete()) {
+		if (indices.isComplete())
+		{
 			break;
 		}
 
@@ -85,7 +89,8 @@ void VulkanBase::createVertexBuffer()
 	bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
 	bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-	if (vkCreateBuffer(device, &bufferInfo, nullptr, &vertexBuffer) != VK_SUCCESS) {
+	if (vkCreateBuffer(device, &bufferInfo, nullptr, &vertexBuffer) != VK_SUCCESS)
+	{
 		throw std::runtime_error("failed to create vertex buffer!");
 	}
 
@@ -97,7 +102,8 @@ void VulkanBase::createVertexBuffer()
 	allocInfo.allocationSize = memRequirements.size;
 	allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-	if (vkAllocateMemory(device, &allocInfo, nullptr, &vertexBufferMemory) != VK_SUCCESS) {
+	if (vkAllocateMemory(device, &allocInfo, nullptr, &vertexBufferMemory) != VK_SUCCESS)
+	{
 		throw std::runtime_error("failed to allocate vertex buffer memory!");
 	}
 
