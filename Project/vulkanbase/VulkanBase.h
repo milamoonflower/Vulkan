@@ -22,18 +22,12 @@
 #include "Pipeline.h"
 #include "Swapchain.h"
 
+class Swapchain;
+class Shader;
+
 const std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 
 const std::vector<const char*> deviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
-
-struct QueueFamilyIndices {
-	std::optional<uint32_t> graphicsFamily;
-	std::optional<uint32_t> presentFamily;
-
-	bool isComplete() {
-		return graphicsFamily.has_value() && presentFamily.has_value();
-	}
-};
 
 class VulkanBase
 {
@@ -78,7 +72,7 @@ private:
 	Pipeline2D* m_pGraphicsPipeline;
 	Shader* m_pShader;
 	Swapchain* m_pSwapchain;
-	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+	//QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 	VkBuffer vertexBuffer;
 	VkDeviceMemory vertexBufferMemory;
 
@@ -86,7 +80,7 @@ private:
 	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 	void createVertexBuffer();
 
-	void createFrameBuffers();
+	//void createFrameBuffers();
 	//void createGraphicsPipeline();
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;

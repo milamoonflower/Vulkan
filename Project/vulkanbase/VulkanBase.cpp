@@ -32,14 +32,16 @@ void VulkanBase::initVulkan()
 	pickPhysicalDevice();
 	createLogicalDevice();
 
-	//createRenderPass();
+	glm::ivec2 surfaceSize{};
+	glfwGetFramebufferSize(m_pWindow, &surfaceSize.x, &surfaceSize.y);
+
+	m_pSwapchain = new Swapchain(device, surface, surfaceSize);
 	m_pRenderPass = new RenderPass(device, m_pSwapchain->GetImageFormat());
-	//createGraphicsPipeline();
 	m_pGraphicsPipeline = new Pipeline2D(device, m_pRenderPass->GetRenderPass());
 	m_pSwapchain->createFramebuffers(m_pRenderPass->GetRenderPass());
 	// week 02
 
-	QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice);
+	QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice, surface);
 	m_pCommandBuffer = new CommandBuffer();
 	m_pCommandBuffer->Initialize(device, queueFamilyIndices.graphicsFamily.value());
 	createVertexBuffer();

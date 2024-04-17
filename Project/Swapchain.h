@@ -11,8 +11,8 @@ public:
 
 	~Swapchain();
 
-	//VkExtent2D extent() const;
-	//VkFramebuffer framebuffer(uint32_t imageIndex) const;
+	inline VkExtent2D GetExtent() const { return m_Extent; }
+	inline std::vector<VkFramebuffer> GetFramebuffers() const { return m_Framebuffers; }
 
 	inline uint32_t GetImageCount() const {}
 	inline VkFormat GetImageFormat() const { return m_ImageFormat; }

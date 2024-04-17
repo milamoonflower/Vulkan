@@ -43,7 +43,7 @@ void VulkanBase::drawFrame()
 	vkResetFences(device, 1, &inFlightFence);
 
 	uint32_t imageIndex;
-	vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+	vkAcquireNextImageKHR(device, m_pSwapchain->GetSwapchain(), UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
 	vkResetCommandBuffer(m_pCommandBuffer->GetCommandBuffer(), /*VkCommandBufferResetFlagBits*/ 0);
 	m_pCommandBuffer->Begin();
@@ -77,7 +77,7 @@ void VulkanBase::drawFrame()
 	presentInfo.waitSemaphoreCount = 1;
 	presentInfo.pWaitSemaphores = signalSemaphores;
 
-	VkSwapchainKHR swapChains[] = { swapChain };
+	VkSwapchainKHR swapChains[] = { m_pSwapchain->GetSwapchain() };
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = swapChains;
 

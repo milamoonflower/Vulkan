@@ -74,7 +74,7 @@ void Swapchain::createSwapchain(VkSurfaceKHR surface, const glm::ivec2& surfaceS
 	createInfo.imageArrayLayers = 1;
 	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-	QueueFamilyIndices indices = findQueueFamilies(m_PhysicalDevice);
+	QueueFamilyIndices indices = findQueueFamilies(m_PhysicalDevice, surface);
 	uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
 	if (indices.graphicsFamily != indices.presentFamily)
@@ -157,7 +157,7 @@ Swapchain::SwapChainSupportDetails Swapchain::querySwapChainSupport(VkSurfaceKHR
 	uint32_t formatCount;
 	vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, surface, &formatCount, nullptr);
 
-	if (formatCount != 0)
+	if(formatCount != 0)
 	{
 		details.formats.resize(formatCount);
 		vkGetPhysicalDeviceSurfaceFormatsKHR(m_PhysicalDevice, surface, &formatCount, details.formats.data());
@@ -166,7 +166,7 @@ Swapchain::SwapChainSupportDetails Swapchain::querySwapChainSupport(VkSurfaceKHR
 	uint32_t presentModeCount;
 	vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, surface, &presentModeCount, nullptr);
 
-	if (presentModeCount != 0)
+	if(presentModeCount != 0)
 	{
 		details.presentModes.resize(presentModeCount);
 		vkGetPhysicalDeviceSurfacePresentModesKHR(m_PhysicalDevice, surface, &presentModeCount, details.presentModes.data());

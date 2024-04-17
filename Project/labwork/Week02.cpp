@@ -22,7 +22,7 @@ void VulkanBase::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t ima
 
 void VulkanBase::drawFrame(uint32_t imageIndex)
 {
-	m_pRenderPass->Begin(swapChainFramebuffers, imageIndex, swapChainExtent, m_pCommandBuffer->GetCommandBuffer());
+	m_pRenderPass->Begin(m_pSwapchain->GetFramebuffers(), imageIndex, m_pSwapchain->GetExtent(), m_pCommandBuffer->GetCommandBuffer());
 
 	vkCmdBindPipeline(m_pCommandBuffer->GetCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS, m_pGraphicsPipeline->GetPipeline());
 
@@ -44,6 +44,7 @@ void VulkanBase::drawFrame(uint32_t imageIndex)
 	m_pRenderPass->End(m_pCommandBuffer->GetCommandBuffer());
 }
 
+/*
 QueueFamilyIndices VulkanBase::findQueueFamilies(VkPhysicalDevice device)
 {
 	QueueFamilyIndices indices;
@@ -80,6 +81,7 @@ QueueFamilyIndices VulkanBase::findQueueFamilies(VkPhysicalDevice device)
 
 	return indices;
 }
+*/
 
 void VulkanBase::createVertexBuffer()
 {

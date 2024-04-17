@@ -1,47 +1,54 @@
 #include "vulkanbase/VulkanBase.h"
 
-void VulkanBase::pickPhysicalDevice() {
+void VulkanBase::pickPhysicalDevice()
+{
 	uint32_t deviceCount = 0;
 	vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
-	if (deviceCount == 0) {
+	if (deviceCount == 0)
+	{
 		throw std::runtime_error("failed to find GPUs with Vulkan support!");
 	}
 
 	std::vector<VkPhysicalDevice> devices{ deviceCount };
 	vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-	if (deviceCount == 0) {
+	if (deviceCount == 0)
+	{
 		throw std::runtime_error("failed to find GPUs with Vulkan support!");
 	}
 
-	for (const auto& device : devices) {
-		if (isDeviceSuitable(device)) {
+	for (const auto& device : devices)
+	{
+		if (isDeviceSuitable(device))
+		{
 			physicalDevice = device;
 			break;
 		}
 	}
 
-	if (physicalDevice == VK_NULL_HANDLE) {
+	if (physicalDevice == VK_NULL_HANDLE)
+	{
 		throw std::runtime_error("failed to find a suitable GPU!");
 	}
 }
 
-bool VulkanBase::isDeviceSuitable(VkPhysicalDevice device) {
-	QueueFamilyIndices indices = findQueueFamilies(device);
+bool VulkanBase::isDeviceSuitable(VkPhysicalDevice device)
+{
+	QueueFamilyIndices indices = findQueueFamilies(device, surface);
 	bool extensionsSupported = checkDeviceExtensionSupport(device);
 	return indices.isComplete() && extensionsSupported;
-
 }
 
 void VulkanBase::createLogicalDevice() {
-	QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+	QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
 
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 	std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
 	float queuePriority = 1.0f;
-	for (uint32_t queueFamily : uniqueQueueFamilies) {
+	for (uint32_t queueFamily : uniqueQueueFamilies)
+	{
 		VkDeviceQueueCreateInfo queueCreateInfo{};
 		queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		queueCreateInfo.queueFamilyIndex = queueFamily;
