@@ -10,7 +10,6 @@ public:
 
 	void DestroyMesh(const VkDevice& device, const VkDescriptorSetLayout& layout);
 	void Draw(const VkPipelineLayout& pipelineLayout, const VkCommandBuffer& commandBuffer) const;
-	void AddVertex(glm::vec2 pos, glm::vec3 color);
 	void Initialize(const VkPhysicalDevice& physicalDevice, const VkDevice& device, const std::vector<Vertex2D> vertices, std::vector<uint16_t> indices);
 
 private:

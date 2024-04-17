@@ -2,8 +2,9 @@
 #include "Swapchain.h"
 #include "vulkanbase/VulkanBase.h"
 
-Swapchain::Swapchain(VkDevice device, VkSurfaceKHR surface, const glm::ivec2& surfaceSize)
+Swapchain::Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, const glm::ivec2& surfaceSize)
 	: m_Device{ device }
+	, m_PhysicalDevice{ physicalDevice }
 {
 	createSwapchain(surface, surfaceSize);
 	createImageViews();

@@ -26,62 +26,9 @@ void VulkanBase::drawFrame(uint32_t imageIndex)
 
 	vkCmdBindPipeline(m_pCommandBuffer->GetCommandBuffer(), VK_PIPELINE_BIND_POINT_GRAPHICS, m_pGraphicsPipeline->GetPipeline());
 
-// 	VkViewport viewport{};
-// 	viewport.x = 0.0f;
-// 	viewport.y = 0.0f;
-// 	viewport.width = (float)swapChainExtent.width;
-// 	viewport.height = (float)swapChainExtent.height;
-// 	viewport.minDepth = 0.0f;
-// 	viewport.maxDepth = 1.0f;
-// 	vkCmdSetViewport(commandBuffer.GetCommandBuffer(), 0, 1, &viewport);
-// 
-// 	VkRect2D scissor{};
-// 	scissor.offset = { 0, 0 };
-// 	scissor.extent = swapChainExtent;
-// 	vkCmdSetScissor(commandBuffer.GetCommandBuffer(), 0, 1, &scissor);
-
 	drawScene();
 	m_pRenderPass->End(m_pCommandBuffer->GetCommandBuffer());
 }
-
-/*
-QueueFamilyIndices VulkanBase::findQueueFamilies(VkPhysicalDevice device)
-{
-	QueueFamilyIndices indices;
-
-	uint32_t queueFamilyCount = 0;
-	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-
-	std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
-
-	int i = 0;
-	for (const auto& queueFamily : queueFamilies)
-	{
-		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
-		{
-			indices.graphicsFamily = i;
-		}
-
-		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
-
-		if (presentSupport)
-		{
-			indices.presentFamily = i;
-		}
-
-		if (indices.isComplete())
-		{
-			break;
-		}
-
-		i++;
-	}
-
-	return indices;
-}
-*/
 
 void VulkanBase::createVertexBuffer()
 {

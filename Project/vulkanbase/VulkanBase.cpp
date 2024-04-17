@@ -35,9 +35,10 @@ void VulkanBase::initVulkan()
 	glm::ivec2 surfaceSize{};
 	glfwGetFramebufferSize(m_pWindow, &surfaceSize.x, &surfaceSize.y);
 
-	m_pSwapchain = new Swapchain(device, surface, surfaceSize);
+	m_pSwapchain = new Swapchain(device, physicalDevice, surface, surfaceSize);
 	m_pRenderPass = new RenderPass(device, m_pSwapchain->GetImageFormat());
 	m_pGraphicsPipeline = new Pipeline2D(device, m_pRenderPass->GetRenderPass());
+	m_pGraphicsPipeline->AddMesh(Mesh2D());
 	m_pSwapchain->createFramebuffers(m_pRenderPass->GetRenderPass());
 	// week 02
 

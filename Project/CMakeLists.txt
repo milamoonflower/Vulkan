@@ -32,8 +32,8 @@ set(SOURCES
     # Add other source files here
     
     "labwork/Week02.cpp" 
-    "labwork/Week03.cpp" 
-    "labwork/Week04.cpp" 
+     
+     
     "labwork/Week05.cpp"
     "labwork/Week06.cpp"
  "Shader.h" "Shader.cpp")

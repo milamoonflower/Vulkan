@@ -6,7 +6,7 @@
 class Swapchain
 {
 public:
-	Swapchain(VkDevice device, VkSurfaceKHR surface, const glm::ivec2& surfaceSize);
+	Swapchain(VkDevice device, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, const glm::ivec2& surfaceSize);
 	void createFramebuffers(VkRenderPass renderPass);
 
 	~Swapchain();
